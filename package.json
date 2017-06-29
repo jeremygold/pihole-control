@@ -5,7 +5,7 @@
   "main": "pihole-control.js",
   "dependencies": {
     "express": "^4.15.3",
-    "pug": "^0.1.0"
+    "pug": "^2.0.0-rc.2"
   },
   "devDependencies": {},
   "scripts": {
