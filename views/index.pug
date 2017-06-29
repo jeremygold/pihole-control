@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h1 Pihole controller
+
+  - var btnType = 'info'
+  - var btnSize = 'lg'
+  table(cellpadding=50)
+    tr
+      td
+        button(type='button' class='btn btn-' + btnType + ' btn-' + btnSize onclick='enable();') Enable Pihole
+      td
+        button(type='button' class='btn btn-' + btnType + ' btn-' + btnSize onclick='disable();') Disable Pihole
+
+  div(id="status") Status
+
+  script.
+    function disable() {
+      console.log('disabling');
+      $.get("/control/disable", function(data) {
+        $('#status').html(data);
+      });
+    }
+
+    function enable() {
+      console.log('enabling');
+      $.get("/control/enable", function(data) {
+        $('#status').html(data);
+      });
+    }
+

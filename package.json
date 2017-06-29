@@ -1,16 +1,17 @@
 {
   "name": "pihole-control",
-  "version": "1.0.0",
-  "description": "Controller for pihole to allow temporary disabling via web page",
-  "main": "pihole-control.js",
-  "dependencies": {
-    "express": "^4.15.3",
-    "pug": "^2.0.0-rc.2"
-  },
-  "devDependencies": {},
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "pihole-control-test.js"
+    "start": "node ./bin/www"
   },
-  "author": "Jeremy Gold",
-  "license": "ISC"
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "morgan": "~1.8.1",
+    "pug": "~2.0.0-beta11",
+    "serve-favicon": "~2.4.2"
+  }
 }
