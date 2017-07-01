@@ -1,10 +1,14 @@
 #!/bin/bash
 
-response=$(curl --silent http://192.168.1.116:3000/status)
+config_file=/etc/dnsmasq.d/03-pihole-wildcard.conf
+temp_location=/etc/03-pihole-wildcard.conf
 
-config_file=test/config.file
-temp_location=test/config.file.bak
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
 
+response=$(curl --silent http://localhost:3000/status)
 echo "Server status: $response"
 
 if [[ $response == "Enabled" ]]
