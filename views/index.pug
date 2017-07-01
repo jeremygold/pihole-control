@@ -16,19 +16,19 @@ block content
 
   script.
     $( document ).ready(function() {
-      console.log( "ready!" );
-      $('#status').html("Enabled");
+      $.get("/status", function(data) {
+          console.log("Current Status: " + data);
+          $('#status').html(data);
+      });
     });
 
     function disable() {
-      console.log('disabling');
       $.get("/control/disable", function(data) {
         $('#status').html(data);
       });
     }
 
     function enable() {
-      console.log('enabling');
       $.get("/control/enable", function(data) {
         $('#status').html(data);
       });

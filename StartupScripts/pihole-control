@@ -17,7 +17,7 @@
 case "$1" in
   start)
     echo "Starting pihole-control daemon"
-    /usr/local/bin/node /home/pi/git/pihole-control/bin/www >> /var/log/pihole-control.log 2>&1
+    /usr/local/bin/node /home/pi/git/pihole-control/bin/www >> /var/log/pihole-control.log 2>&1 &
     ;;
   stop)
     echo "Stopping pihole-control daemon"
