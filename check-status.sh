@@ -13,20 +13,20 @@ echo "Server status: $response"
 
 if [[ $response == "Enabled" ]]
 then
-    if [ -f $config_file ]
-    then
-        echo "Enabling"
-        mv -v $config_file $temp_location
-    else
-        echo "Already Enabled"
-    fi
-else
     if [ -f $temp_location ]
     then
-        echo "Disabling"
+        echo "Enabling pihole"
         mv -v $temp_location $config_file
     else
-        echo "Already disabled"
+        echo "Pihole already enabled"
+    fi
+else
+    if [ -f $config_file ]
+    then
+        echo "Disabling pihole"
+        mv -v $config_file $temp_location
+    else
+        echo "Pihole already disabled"
     fi
 fi
 
