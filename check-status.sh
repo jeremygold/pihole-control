@@ -1,5 +1,6 @@
 #!/bin/bash
 
+pihole_cmd=/usr/local/bin/pihole
 config_file=/etc/dnsmasq.d/03-pihole-wildcard.conf
 temp_location=/etc/03-pihole-wildcard.conf
 
@@ -17,6 +18,7 @@ then
     then
         echo "Enabling pihole"
         mv -v $temp_location $config_file
+        $pihole_cmd restartdns
     else
         echo "Pihole already enabled"
     fi
@@ -25,6 +27,7 @@ else
     then
         echo "Disabling pihole"
         mv -v $config_file $temp_location
+        $pihole_cmd restartdns
     else
         echo "Pihole already disabled"
     fi
