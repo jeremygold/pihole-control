@@ -15,6 +15,11 @@ block content
   div(id="status") Status
 
   script.
+    $( document ).ready(function() {
+      console.log( "ready!" );
+      $('#status').html("Enabled");
+    });
+
     function disable() {
       console.log('disabling');
       $.get("/control/disable", function(data) {
