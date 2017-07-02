@@ -1,36 +1,51 @@
 extends layout
 
 block content
-  h1 Pihole controller
+  div(class='jumbotron')
+      h1(align='center') Pihole Control
 
-  - var btnType = 'info'
-  - var btnSize = 'lg'
-  table(cellpadding=50)
-    tr
-      td
-        button(type='button' class='btn btn-' + btnType + ' btn-' + btnSize onclick='enable();') Enable Pihole
-      td
-        button(type='button' class='btn btn-' + btnType + ' btn-' + btnSize onclick='disable();') Disable Pihole
+      - var btnType = 'primary'
+      - var btnSize = 'lg'
+      table(align='center' style="width:80%")
+        tr
+            td
+                button(type='button' style="width:100%" class='btn btn-' + btnType + ' btn-' + btnSize onclick='enable();') Enable Pihole
+        tr
+            td
+                button(type='button' style="width:100%" class='btn btn-' + btnType + ' btn-' + btnSize onclick='disable();') Disable Pihole
 
-  div(id="status") Status
+        tr
+            td
+                div(class='container' align='center' style="width:100%" border="1")
+                    div(id='status-alert' class='alert alert-enabled')
+                        h3(id="status") Status
 
   script.
+    function setStatus(status) {
+        $('#status').html("Status: " + status);
+        if(status === "Enabled") {
+            $('#status-alert').addClass('alert-enabled').removeClass('alert-disabled');
+        } else {
+            $('#status-alert').addClass('alert-disabled').removeClass('alert-enabled');
+        }
+    }
+           
     $( document ).ready(function() {
       $.get("/status", function(data) {
           console.log("Current Status: " + data);
-          $('#status').html(data);
+          setStatus(data);
       });
     });
 
     function disable() {
-      $.get("/control/disable", function(data) {
-        $('#status').html(data);
+      $.get("/control/disable", function(status) {
+        setStatus(status);
       });
     }
 
     function enable() {
-      $.get("/control/enable", function(data) {
-        $('#status').html(data);
+      $.get("/control/enable", function(status) {
+        setStatus(status);
       });
     }
 
