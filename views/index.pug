@@ -6,13 +6,13 @@ block content
 
       - var btnType = 'primary'
       - var btnSize = 'lg'
-      table(align='center' style="width:80%")
+      table(align='center' style="width:90%")
         tr
             td
-                button(type='button' style="width:100%" class='btn btn-' + btnType + ' btn-' + btnSize onclick='enable();') Enable Pihole
+                button(type='button' style="width:100%" class='btn btn-' + btnType + ' btn-' + btnSize onclick='enable();') ENABLE PIHOLE
         tr
             td
-                button(type='button' style="width:100%" class='btn btn-' + btnType + ' btn-' + btnSize onclick='disable();') Disable Pihole
+                button(type='button' style="width:100%" class='btn btn-' + btnType + ' btn-' + btnSize onclick='disable();') DISABLE PIHOLE
 
         tr
             td
@@ -22,7 +22,7 @@ block content
 
   script.
     function setStatus(status) {
-        $('#status').html("Status: " + status);
+        $('#status').html("STATUS: " + status.toUpperCase());
         if(status === "Enabled") {
             $('#status-alert').addClass('alert-enabled').removeClass('alert-disabled');
         } else {
