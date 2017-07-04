@@ -63,9 +63,9 @@ function setStatus(status) {
 		}
 }
 
-const disable = _ => fetch("/control/disable").then(response => { response.text().then(setStatus); });
-const enable = _ => fetch("/control/enable").then(response => { response.text().then(setStatus); });
-const initialize = _ => fetch("/status").then(response => { response.text().then(setStatus); });
+const disable = _ => fetch("/control/disable").then(response => response.text()).then(setStatus);
+const enable = _ => fetch("/control/enable").then(response => response.text()).then(setStatus);
+const initialize = _ => fetch("/status").then(response => response.text()).then(setStatus);
 document.addEventListener('DOMContentLoaded', _ => initialize());
 
 				</script>
