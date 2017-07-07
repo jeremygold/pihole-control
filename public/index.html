@@ -47,118 +47,63 @@
         <!-- initialize the SDK after all desired features are loaded -->
         <script defer src="/__/firebase/init.js"></script>
 
-
         <script src="https://cdn.firebase.com/libs/firebaseui/2.2.1/firebaseui.js"></script>
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.2.1/firebaseui.css" />
 
 				<script type="text/javascript">
-						var handleSignedInUser = function(user) {
-							document.getElementById('user-signed-in').style.display = 'block';
-							document.getElementById('user-signed-out').style.display = 'none';
-							document.getElementById('email').textContent = user.email;
-						};
 
-						/**
-						 * Displays the UI for a signed out user.
-						 */
-						var handleSignedOutUser = function() {
-							document.getElementById('user-signed-in').style.display = 'none';
-							document.getElementById('user-signed-out').style.display = 'block';
-							ui.start('#firebaseui-container', getUiConfig());
-						};
+var handleSignedInUser = function(user) {
+    console.log("Handling signed in user");
+    document.getElementById('user-signed-in').style.display = 'block';
+    document.getElementById('user-signed-out').style.display = 'none';
+    document.getElementById('firebaseui-auth-container').style.display = 'none';
+    document.getElementById('email').textContent = user.email;
+};
 
-						// Listen to change in auth state so it displays the correct UI for when
-						// the user is signed in or not.
-						firebase.auth().onAuthStateChanged(function(user) {
-							document.getElementById('loading').style.display = 'none';
-							document.getElementById('loaded').style.display = 'block';
-							console.log("onAuthStateChanged: User = " + JSON.stringify(user));
-							user ? handleSignedInUser(user) : handleSignedOutUser();
-						});
+/**
+ * Displays the UI for a signed out user.
+ */
+var handleSignedOutUser = function() {
+    console.log("Handling signed out user");
+    document.getElementById('user-signed-in').style.display = 'none';
+    document.getElementById('user-signed-out').style.display = 'block';
+    document.getElementById('firebaseui-auth-container').style.display = 'block';
+};
 
-					// FirebaseUI config.
-            var uiConfig = {
-                'callbacks': {
-                    // Called when the user has been successfully signed in.
-                    'signInSuccess': function(user, credential, redirectUrl) {
-                        handleSignedInUser(user);
-                        // Do not redirect.
-                        return false;
-                    }
-                },
-                'signInFlow': 'popup',
-                signInOptions: [
-                    // Leave the lines as is for the providers you want to offer your users.
-                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                ]
-            };
 
-					// Initialize the FirebaseUI Widget using Firebase.
-					var ui = new firebaseui.auth.AuthUI(firebase.auth());
-					// The start method will wait until the DOM is loaded.
-					ui.start('#firebaseui-auth-container', uiConfig);
-				</script>
+// FirebaseUI config.
+var uiConfig = {
+    'callbacks': {
+        // Called when the user has been successfully signed in.
+        'signInSuccess': function(user, credential, redirectUrl) {
+            handleSignedInUser(user);
+            // Do not redirect.
+            return false;
+        }
+    },
+    'signInFlow': 'popup',
+    signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    ]
+};
 
-		</head>
-		<body>
-				<div class="jumbotron">
-						<h1 align="center">Pihole Control</h1>
-						<div id="loading" align="center">Loading...</div>
-						<div id="loaded"  align="center" class="hidden"></div>
-						<table align="center" style="width:90%;">
-								<tr>
-										<td>
-                        <button class="btn btn-primary btn-lg" type="button" style="width:100%;" onclick="enable();">ENABLE PIHOLE</button>
-                    </td>
-								</tr>
-								<tr>
-										<td>
-                        <button class="btn btn-primary btn-lg" type="button" style="width:100%;" onclick="disable();">DISABLE PIHOLE</button>
-                    </td>
-								</tr>
-								<tr>
-										<td>
-												<div class="container" align="center" style="width:100%;" border="1">
-														<div class="alert alert-enabled" id="status-alert">
-																<h3 id="status">Status</h3>
-														</div>
-												</div>
-										</td>
-								</tr>
-                <tr>
-                    <td>
-                      <div id="load">Firebase status</div>
-                    </td>
-                </tr>
-						</table>
-				</div>
-				<div id="firebaseui-auth-container"></div>
-				<div id="user-signed-in">
-						<div id="user-info">
-								<div id="email"></div>
-						</div>
-						<p>
-								<button id="sign-out">Sign Out</button>
-						</p>
-				</div>
-				<div id="user-signed-out">
-						<h4>You are signed out.</h4>
-						<div id="firebaseui-container"></div>
-				</div>
-
-				<script>
+// Initialize the FirebaseUI Widget using Firebase.
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+// The start method will wait until the DOM is loaded.
+ui.start('#firebaseui-auth-container', uiConfig);
 
 function setStatus(status) {
-		console.log("Status = " + JSON.stringify(status));
-		document.getElementById('status').innerHTML = "STATUS: " + status.toUpperCase();
-		var statusAlert = document.getElementById('status-alert');
-		if(status === "Enabled") {
-				statusAlert.classList.add('alert-enabled');
-				statusAlert.classList.remove('alert-disabled');
-		} else {
-				statusAlert.classList.add('alert-disabled');
-				statusAlert.classList.remove('alert-enabled');
-		}
+    console.log("Status = " + JSON.stringify(status));
+    document.getElementById('status').innerHTML = "STATUS: " + status.toUpperCase();
+    var statusAlert = document.getElementById('status-alert');
+    if(status === "Enabled") {
+        statusAlert.classList.add('alert-enabled');
+        statusAlert.classList.remove('alert-disabled');
+    } else {
+        statusAlert.classList.add('alert-disabled');
+        statusAlert.classList.remove('alert-enabled');
+    }
 }
 
 const disable = _ => changeStatus("Disabled");
@@ -169,33 +114,46 @@ const enable = _ => changeStatus("Enabled");
 const stateRef = 'pihole-state';
 
 function changeStatus(newStatus) {
-		firebase.database().ref(stateRef).set({stat: newStatus});
+    firebase.database().ref(stateRef).set({stat: newStatus});
 }
 
 function initialize() {
 
-		document.getElementById('sign-out').addEventListener('click', function() {
+    document.getElementById('sign-out').addEventListener('click', function() {
         console.log("Signing out");
-				firebase.auth().signOut();
-		});
-    
-		try {
-				let app = firebase.app();
-				let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-				document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+        firebase.auth().signOut().then(_ => {
+            console.log("Signed out OK");
+        }).catch(_ => {
+            console.log("Failed to sign out");
+        });
+    });
 
-				firebase.database().ref(stateRef).on('value', function(snapshot) {
-						console.log("Dbase change detected - updating status");
-						setStatus(snapshot.val().stat);
-				});
+    // Listen to change in auth state so it displays the correct UI for when
+    // the user is signed in or not.
+    firebase.auth().onAuthStateChanged(function(user) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('loaded').style.display = 'block';
+        console.log("onAuthStateChanged..."); 
+        user ? handleSignedInUser(user) : handleSignedOutUser();
+    });
 
-				// Default to enabled
-				changeStatus("Enabled");
+    try {
+        let app = firebase.app();
+        let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+        document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
 
-		} catch (e) {
-				console.error(e);
-				document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-		}
+        firebase.database().ref(stateRef).on('value', function(snapshot) {
+            console.log("Dbase change detected - updating status");
+            setStatus(snapshot.val().stat);
+        });
+
+        // Default to enabled
+        changeStatus("Enabled");
+
+    } catch (e) {
+        console.error(e);
+        document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+    }
 }
 
 const disable = _ => fetch("/control/disable").then(response => response.text()).then(setStatus);
@@ -204,6 +162,56 @@ const initialize = _ => fetch("/status").then(response => response.text()).then(
 
 document.addEventListener('DOMContentLoaded', _ => initialize());
 
-				</script>
-		</body>
+        </script>
+        </script>
+
+    </head>
+    <body>
+        <div class="jumbotron">
+            <h1 align="center">Pihole Control</h1>
+            <div id="loading" align="center">Loading...</div>
+            <div id="loaded"  align="center" class="hidden"></div>
+            <table align="center" style="width:90%;">
+                <tr>
+                    <td>
+                        <button class="btn btn-primary btn-lg" type="button" style="width:100%;" onclick="enable();">ENABLE PIHOLE</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-primary btn-lg" type="button" style="width:100%;" onclick="disable();">DISABLE PIHOLE</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="container" align="center" style="width:100%;" border="1">
+                            <div class="alert alert-enabled" id="status-alert">
+                                <h3 id="status">Status</h3>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="load">Firebase status</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="user-signed-in">
+            <div id="user-info">
+                <div id="email"></div>
+            </div>
+            <p>
+            <button id="sign-out">Sign Out</button>
+            </p>
+        </div>
+        <div id="user-signed-out">
+            <h4>You are signed out.</h4>
+            <div id="firebaseui-auth-container">
+                <div id="firebaseui-container"></div>
+            </div>
+        </div>
+
+    </body>
 </html>
