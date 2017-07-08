@@ -4,5 +4,5 @@ npm-debug.log
 .env
 .DS_Store
 *.swp
-StartupScripts/pihole-control-private-key.json
+pihole-control-private-key.json
 
