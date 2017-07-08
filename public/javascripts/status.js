@@ -42,8 +42,6 @@ function setStatus(status) {
 const disable = _ => changeStatus("Disabled");
 const enable = _ => changeStatus("Enabled");
 
-// const initStatus = _ => fetch("/status").then(response => { response.text().then(setStatus); });
-
 const stateRef = 'pihole-state';
 
 function changeStatus(newStatus) {
