@@ -11,17 +11,35 @@
 # Description:       A simple script for the Hexapod project that will start / stop the pihole-control Daemon
 ### END INIT INFO
 
-# If you want a command to always run, put it here
+APP_NAME=pihole-control
+PID_FILE=/var/log/$APP_NAME.pid
+APP=/home/pi/git/pihole-control/scripts/pihole-monitor.js
+NODE=/usr/local/bin/node
+LOGFILE=/var/log/$APP_NAME.log
 
 # Carry out specific functions when asked to by the system
 case "$1" in
   start)
-    echo "Starting pihole-control daemon"
-    /usr/local/bin/node /home/pi/git/pihole-control/bin/www >> /var/log/pihole-control.log 2>&1 &
+    echo "Starting $APP_NAME daemon"
+    PID=`$NODE $APP >> $LOGFILE 2>&1 & echo $1`
+    if[ -z $PID ]; then
+        echo "Failed to retrieve PID"
+    else
+        echo $PID > $PID_FILE
+        echo "Wrote PID OK"
+    fi;
+
     ;;
   stop)
-    echo "Stopping pihole-control daemon"
-    killall node
+    echo "Stopping $APP_NAME daemon"
+
+    if[ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        kill -HUP $PID
+        rm -f $PID_FILE
+    else
+        echo "$PID_FILE not found"
+    fi
     ;;
   *)
     echo "Usage: /etc/init.d/pihole-control {start|stop}"
