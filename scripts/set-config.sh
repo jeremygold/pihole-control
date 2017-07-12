@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# pihole_cmd=/usr/local/bin/pihole
-# config_file=/etc/dnsmasq.d/03-pihole-wildcard.conf
-# temp_location=/etc/03-pihole-wildcard.conf
+pihole_cmd=/usr/local/bin/pihole
+config_file=/etc/dnsmasq.d/03-pihole-wildcard.conf
+temp_location=/etc/03-pihole-wildcard.conf
 
 # Temp variables for testing
-pihole_cmd=echo
-config_file=/home/jeremy/test.config
-temp_location=/home/jeremy/temp/test.config
+# pihole_cmd=echo
+# config_file=/home/jeremy/test.config
+# temp_location=/home/jeremy/temp/test.config
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" 1>&2
