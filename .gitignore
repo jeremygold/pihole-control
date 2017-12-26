@@ -4,3 +4,6 @@ npm-debug.log
 .env
 .DS_Store
 *.swp
+pihole-control-private-key.json
+firebase-debug.log
+

@@ -1,73 +1,65 @@
 <!DOCTYPE html>
 <html>
-		<head>
-				<title>Pihole Control</title>
-				<link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
-				<meta name="viewport" content="user-scalable=no, width=device-width">
-				<style type="text/css">
-				table { 
-						border: 2px solid black; 
-				} 
-				th, td { 
-						padding: 10px; 
-				}
-				.alert-enabled { 
-						background-color: #dff0d8;
-						border-color: #468847;
-						color: #468847;
-				}
-				.alert-disabled { 
-						background-color: #f2dede;
-						border-color: #b94a48;
-						color: #b94a48;
-				}
-				</style>
-		</head>
-		<body>
-				<div class="jumbotron">
-						<h1 align="center">Pihole Control</h1>
-						<table align="center" style="width:90%;">
-								<tr>
-										<td>
+    <head>
+        <title>Pihole Control</title>
+        <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
+        <link rel="stylesheet" href="css/pihole-control.css">
+        <link rel="icon" href="images/favicon.png" />
+        <meta name="viewport" content="user-scalable=no, width=device-width">
+
+        <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+        <script defer src="/__/firebase/4.1.3/firebase-app.js"></script>
+        <script defer src="/__/firebase/4.1.3/firebase-auth.js"></script>
+        <script defer src="/__/firebase/4.1.3/firebase-database.js"></script>
+        <script defer src="/__/firebase/init.js"></script>
+
+        <script type="text/javascript" src="javascripts/authentication.js"></script>
+        <script type="text/javascript" src="javascripts/status.js"></script>
+        <script type="text/javascript" src="javascripts/init.js"></script>
+    </head>
+    <body>
+        <div class="jumbotron">
+            <h1 align="center">Pihole Control</h1>
+            <table align="center" style="width:90%;">
+                <tr>
+                    <td>
                         <button class="btn btn-primary btn-lg" type="button" style="width:100%;" onclick="enable();">ENABLE PIHOLE</button>
                     </td>
-								</tr>
-								<tr>
-										<td>
+                </tr>
+                <tr>
+                    <td>
                         <button class="btn btn-primary btn-lg" type="button" style="width:100%;" onclick="disable();">DISABLE PIHOLE</button>
                     </td>
-								</tr>
-								<tr>
-										<td>
-												<div class="container" align="center" style="width:100%;" border="1">
-														<div class="alert alert-enabled" id="status-alert">
-																<h3 id="status">Status</h3>
-														</div>
-												</div>
-										</td>
-								</tr>
-						</table>
-				</div>
-				<script>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="container" align="center" style="width:100%;" border="1">
+                            <div class="alert alert-enabled" id="status-alert">
+                                <h3 id="status">Status</h3>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <div id="user-signed-in" style="display: none">
+                            <h4 id="email"></h4>
+                            <button id="sign-out">Sign Out</button>
+                        </div>
+                        <div id="user-signed-out">
+                            <h4>You are signed out.</h4>
+                            <button id="sign-in">Sign In</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="load">Firebase status</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-function setStatus(status) {
-    console.log("Status = " + JSON.stringify(status));
-		document.getElementById('status').innerHTML = "STATUS: " + status.toUpperCase();
-    var statusAlert = document.getElementById('status-alert');
-		if(status === "Enabled") {
-				statusAlert.classList.add('alert-enabled');
-				statusAlert.classList.remove('alert-disabled');
-		} else {
-				statusAlert.classList.add('alert-disabled');
-        statusAlert.classList.remove('alert-enabled');
-		}
-}
 
-const disable = _ => fetch("/control/disable").then(response => response.text()).then(setStatus);
-const enable = _ => fetch("/control/enable").then(response => response.text()).then(setStatus);
-const initialize = _ => fetch("/status").then(response => response.text()).then(setStatus);
-document.addEventListener('DOMContentLoaded', _ => initialize());
-
-				</script>
-		</body>
+    </body>
 </html>
