@@ -22,7 +22,7 @@ case "$1" in
   start)
     echo "Starting $APP_NAME daemon"
     PID=`$NODE $APP >> $LOGFILE 2>&1 & echo $1`
-    if[ -z $PID ]; then
+    if [ -z $PID ]; then
         echo "Failed to retrieve PID"
     else
         echo $PID > $PID_FILE
@@ -33,7 +33,7 @@ case "$1" in
   stop)
     echo "Stopping $APP_NAME daemon"
 
-    if[ -f $PID_FILE ]; then
+    if [ -f $PID_FILE ]; then
         PID=`cat $PID_FILE`
         kill -HUP $PID
         rm -f $PID_FILE

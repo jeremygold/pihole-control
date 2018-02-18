@@ -14,7 +14,7 @@ function addDatabaseCallback() {
     console.log("Adding Database Callback");
     admin.database().ref(stateRef).on('value', function(snapshot) {
         console.log("Dbase change detected - Status is now " + snapshot.val().stat);
-        exec("./set-config.sh " + snapshot.val().stat, log);
+        exec("/home/pi/git/pihole-control/scripts/set-config.sh " + snapshot.val().stat, log);
     });
 }
 
